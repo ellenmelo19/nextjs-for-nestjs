@@ -1,109 +1,45 @@
-# 📝 Blog com Next.js 15
+# nextjs-for-nestjs
 
-Um blog simples construído com Next.js 15, TypeScript, Drizzle ORM e SQLite. Inclui sistema de autenticação, painel administrativo completo e gerenciamento de posts.
+Aplicação web em Next.js (App Router) que consome a API do projeto `nestjs-for-nextjs`. Este app entrega a parte pública do blog e um painel admin com autenticação via sessão/JWT, usando Server Actions para operações sensíveis.
 
-## 🚀 Tecnologias
+**Visão técnica**
+- Renderização híbrida com Server Components e Client Components.
+- Server Actions para CRUD e efeitos colaterais (ex.: revalidação de cache, redirect após login).
+- Cache controlado via `revalidateTag` para listas e páginas individuais de posts.
+- Upload de imagens delega para o backend (NestJS), respeitando limites de tamanho.
+- Validação de dados com Zod e sanitização de HTML.
 
-- **Next.js 15** - Framework React com Server Components
-- **TypeScript** - Tipagem estática
-- **Drizzle ORM** - ORM moderno e type-safe
-- **SQLite** - Banco de dados leve e eficiente
-- **Zod** - Validação de dados
-- **TailwindCSS** - Estilização
-- **Better-SQLite3** - Driver SQLite
+**Principais módulos**
+- Admin: criação, edição, publicação e exclusão de posts.
+- Auth: login/logout com cookie seguro e expiração configurável.
+- Public: listagem e leitura de posts.
 
-## ✨ Funcionalidades
+**Variáveis de ambiente**
+Arquivo base: `.env.local-EXAMPLE`
+- `API_URL`: base URL da API NestJS.
+- `JWT_SECRET_KEY`: chave para assinatura/validação de sessão no frontend.
+- `LOGIN_EXPIRATION_SECONDS` e `LOGIN_EXPIRATION_STRING`: expiração da sessão.
+- `LOGIN_COOKIE_NAME`: nome do cookie da sessão.
+- `LOGIN_USER` e `LOGIN_PASS`: credenciais do admin.
+- `ALLOW_LOGIN`: habilita/desabilita login.
+- `IMAGE_UPLOAD_DIRECTORY` e `IMAGE_SERVER_URL`: rota de imagens geradas pelo backend.
+- `NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE`: tamanho máximo do upload.
+- `SIMULATE_WAIT_IN_MS`: atraso artificial para testes.
 
-- ✅ Listagem pública de posts com paginação
-- ✅ Visualização individual de posts
-- ✅ Painel administrativo protegido
-- ✅ Autenticação de usuário
-- ✅ CRUD completo de posts:
-  - Criar novos posts com título, conteúdo, autor e imagem de capa
-  - Editar posts existentes
-  - Deletar posts
-  - Publicar/Despublicar posts
-- ✅ Geração automática de slugs a partir do título
-- ✅ Validação de dados com Zod
-- ✅ Sanitização de HTML no conteúdo
-- ✅ Cache otimizado com Next.js 15
-- ✅ URLs amigáveis para SEO
+**Scripts**
+- `npm run dev` inicia o Next.js em modo desenvolvimento.
+- `npm run build` gera o build de produção.
+- `npm run start` inicia o servidor de produção.
+- `npm run lint` executa o lint.
+- `npm run migrate` aplica migrações (Drizzle).
+- `npm run seed` popula o banco com dados iniciais.
 
-## 📋 Pré-requisitos
+**Estrutura (resumo)**
+- `src/app`: rotas e páginas (App Router).
+- `src/actions`: Server Actions usadas pelo frontend.
+- `src/components`: componentes de UI e admin.
+- `src/lib`: integrações e schemas (Zod).
+- `src/utils`: helpers (API, auth, validação).
 
-- Node.js 18.17.0 ou superior
-- npm ou yarn
-
-## 🔧 Instalação
-
-1. **Clone o repositório**
-```bash
-git clone https://github.com/ellenmelo19/O-blog.git
-cd blog
-npm install
-
-## configure as variaveis de ambiente em .env.local
-
-# Crie o banco SQLite
-touch db.sqlite3
-
-# Execute as migrações
-npm run db:push
-
-# Popule com dados iniciais (opcional)
-npm run db:seed
-
-npm run dev
-
-```
-
-
-<img width="1222" height="932" alt="Captura de tela de 2026-03-03 15-27-38" src="https://github.com/user-attachments/assets/5d2378f9-b813-4941-abd8-68e348d7da0d" />
-
-# 🔐 Autenticação
-
-O sistema usa um mecanismo simples de autenticação baseado em sessão. Para acessar o painel admin:
-
-Acesse /admin/login
-Use as credenciais configuradas 
-A sessão é mantida via cookies seguros
-
-<img width="1260" height="748" alt="Captura de tela de 2026-03-03 15-27-51" src="https://github.com/user-attachments/assets/a70256d8-542b-43c5-a51b-8698777206a2" />
-
-# 📝 Uso do Painel Admin
- - Criar um Post
- 
-Acesse /admin/post/new
-* Preencha os campos:
-  
--Título (mín. 3, máx. 120 caracteres)
-
--Conteúdo (HTML suportado)
-
--Autor (mín. 4, máx. 100 caracteres)
-
--Excerto (resumo do post)
-
--URL da Imagem de Capa
-
--Publicado (checkbox para publicar imediatamente)
-
-Clique em "Salvar"
-
-* Editar um Post
-  
--Acesse /admin/post para ver todos os posts
-
--Clique em "Editar" no post desejado
-
--Modifique os campos necessários
-
-O slug é atualizado automaticamente se o título mudar
-
-* Deletar um Post
-  
--Na lista de posts, clique em "Deletar"
-
--Confirme a ação
-
-<img width="1260" height="748" alt="image" src="https://github.com/user-attachments/assets/21450fa4-c3d5-4d68-8ed8-b53cb1db9c94" />
+**Integração com o backend**
+Este projeto pressupõe o backend `nestjs-for-nextjs` rodando localmente (por padrão em `http://localhost:3001`) e expondo endpoints de autenticação, posts, usuários e upload de imagens.
