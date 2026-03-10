@@ -17,6 +17,20 @@ const nextConfig: NextConfig = {
         pathname: '/**',
         search: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/**',
+        search: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'theblog.otaviomiranda.com.br',
+        port: '',
+        pathname: '/**',
+        search: '',
+      },
     ],
   },
 };
