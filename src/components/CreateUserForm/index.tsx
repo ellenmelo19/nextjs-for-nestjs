@@ -9,6 +9,7 @@ import { PublicUserSchema } from '@/src/lib/user/schemas';
 import { useActionState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { createUserAction } from '@/src/actions/user/create-user-action';
+import { HoneypotInput } from '../HoneypotInput';
 
 export function CreateUserForm() {
   const [state, action, isPending] = useActionState(createUserAction, {
@@ -66,7 +67,7 @@ export function CreateUserForm() {
           disabled={isPending}
           required
         />
-
+        <HoneypotInput />
         <Button disabled={isPending} type='submit' className='mt-4'>
           <UserRoundIcon />
           {!isPending && 'Criar conta'}
