@@ -14,16 +14,16 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 export function MenuAdmin() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  return <MenuAdminInner key={pathname} />;
+}
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+function MenuAdminInner() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const navClasses = clsx(
     'bg-slate-900 text-slate-100 rounded-lg',

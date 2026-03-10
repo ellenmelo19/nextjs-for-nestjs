@@ -1,4 +1,5 @@
 
+import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 import { redirect } from 'next/navigation';
@@ -112,4 +113,10 @@ export async function verifyJwt(jwt: string | undefined = '') {
     console.log('Invalid Token');
     return false;
   }
+}
+
+export async function hashPassword(password: string) {
+  if (!password) return '';
+  const saltRounds = Number(process.env.PASSWORD_SALT_ROUNDS) || 10;
+  return bcrypt.hash(password, saltRounds);
 }

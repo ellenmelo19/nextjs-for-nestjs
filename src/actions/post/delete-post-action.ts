@@ -51,8 +51,8 @@ export async function deletePostAction(id: string) {
     };
   }
 
-  revalidateTag('posts');
-  revalidateTag(`post-${postResponse.data.slug}`);
+  revalidateTag('posts', { expire: 0 });
+  revalidateTag(`post-${postResponse.data.slug}`, { expire: 0 });
 
   return {
     error: '',

@@ -1,10 +1,18 @@
-import {ZodError} from 'zod';
+import { ZodError, type ZodFormattedError } from 'zod';
 
-export function getZodErrorMessages<T>(error: ZodError<T>): string[] {
-  return Object.values(error)
+export function getZodErrorMessages<T>(
+  error: ZodError<T> | ZodFormattedError<T, string>,
+): string[] {
+  const formatted = error instanceof ZodError ? error.format() : error;
+
+  return Object.values(formatted)
     .map(field => {
+      if (typeof field === 'function') return [];
       if (Array.isArray(field)) return field;
-      return field?._errors || [];
+      if (field && typeof field === 'object' && '_errors' in field) {
+        return field._errors as string[];
+      }
+      return [];
     })
     .flat()
     .filter(Boolean);

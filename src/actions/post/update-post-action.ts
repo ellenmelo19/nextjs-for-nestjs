@@ -79,8 +79,8 @@ export async function updatePostAction(
 
   const post = updatePostResponse.data;
 
-  revalidateTag('posts');
-  revalidateTag(`post-${post.slug}`);
+  revalidateTag('posts', { expire: 0 });
+  revalidateTag(`post-${post.slug}`, { expire: 0 });
 
   return {
     formState: PublicPostForApiSchema.parse(post),
