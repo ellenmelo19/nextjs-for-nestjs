@@ -5,8 +5,10 @@ import {
   PublicUserDto,
   PublicUserSchema,
 } from '@/src/lib/user/schemas';
+import { apiRequest } from '@/src/utils/api-request';
 import { asyncDelay } from '@/src/utils/async-delay';
-import { getZodErrorMessages } from '@/src/utils/zod-error-messages';
+import { getZodErrorMessages } from '@/src/utils/get-zod-error-messages';
+import { redirect } from 'next/navigation';
 
 type CreateUserActionState = {
   user: PublicUserDto;
@@ -39,11 +41,21 @@ export async function createUserAction(
     };
   }
 
-  // FETCH API
+  const createResponse = await apiRequest<PublicUserDto>('/user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(parsedFormData.data),
+  });
 
-  return {
-    user: state.user,
-    errors: [],
-    success: true,
-  };
+  if (!createResponse.success) {
+    return {
+      user: PublicUserSchema.parse(formObj),
+      errors: createResponse.errors,
+      success: createResponse.success,
+    };
+  }
+
+  redirect('/login?created=1');
 }
